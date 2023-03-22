@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c7f8591f67534627a5aaa4194e919c93" Name="Diagram1">
+        <EntityTypeShape EntityType="LufthavnModel.AirlineOperator" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LufthavnModel.Airport" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LufthavnModel.Person" Width="1.5" PointX="1.5" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="LufthavnModel.Route" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="LufthavnModel.Ticket" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <AssociationConnector Association="LufthavnModel.FK_Routes_RouteOperator" ManuallyRouted="false" />
+        <AssociationConnector Association="LufthavnModel.FK_Routes_RouteOwner" ManuallyRouted="false" />
+        <AssociationConnector Association="LufthavnModel.FK_Routes_FromIata" ManuallyRouted="false" />
+        <AssociationConnector Association="LufthavnModel.FK_Routes_ToIata" ManuallyRouted="false" />
+        <AssociationConnector Association="LufthavnModel.FK_Tickets_People" ManuallyRouted="false" />
+        <AssociationConnector Association="LufthavnModel.TicketRoutes" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
