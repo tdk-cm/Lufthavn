@@ -10,5 +10,6 @@ namespace Lufthavn_Final.ProcessingLayer.Models
     {
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public List<RouteData> Routes { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Lufthavn_Final.Data;
+﻿using Lufthavn_Final.ProcessingLayer;
+using Lufthavn_Final.ProcessingLayer.Models;
+using Lufthavn_Final.ProcessingLayer.UIModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace Lufthavn_Final
 {
     internal class UI
     {
-        DataProcessor _processor = new DataProcessor();
+        AirportProcessor _processor = new AirportProcessor();
 
         public void Start()
         {
@@ -69,42 +71,42 @@ namespace Lufthavn_Final
 
         private void AddRoute()
         {
-            Route newRoute = new Route();
+            RouteUIData newRoute = new RouteUIData();
             // Load choices
-            List<Airport> airports = _processor.GetAirports();
-            List<AirlineOperator> operators = _processor.GetOperators();
+            List<AirportUIData> airports = _processor.GetAirports();
+            List<OperatorUIData> operators = _processor.GetOperators();
 
             List<string> airportChoice = new List<string>();
 
             for (int i = 0; i < airports.Count; i++)
             {
-                airportChoice.Add($"{airports[i].full_name} - {airports[i].iata_code}");
+                airportChoice.Add($"{airports[i].AirportName} - {airports[i].AirportIataCode}");
             }
 
             List<string> operatorChoices = new List<string>();
 
             for (int i = 0; i < operators.Count; i++)
             {
-                operatorChoices.Add($"{operators[i].company_name}");
+                operatorChoices.Add($"{operators[i].OperatorName}");
             }
 
             Console.WriteLine("Choose starting airport: ");
             Console.WriteLine();
 
-            newRoute.from_iata = ConsoleTools.GetUserChoices<Airport>(airportChoice, airports).iata_code;
+            newRoute.DepartureIata = ConsoleTools.GetUserChoices<AirportUIData>(airportChoice, airports).AirportIataCode;
 
             Console.WriteLine("Choose landing airport: ");
             Console.WriteLine();
 
-            newRoute.to_iata = ConsoleTools.GetUserChoices<Airport>(airportChoice, airports).iata_code;
+            newRoute.LandingIata = ConsoleTools.GetUserChoices<AirportUIData>(airportChoice, airports).AirportIataCode;
 
             Console.WriteLine($"Choose Route Owner");
 
-            newRoute.route_owner = ConsoleTools.GetUserChoices<AirlineOperator>(operatorChoices, operators).company_id;
+            newRoute.Owner = ConsoleTools.GetUserChoices<OperatorUIData>(operatorChoices, operators);
 
             Console.WriteLine($"Choose Route Operator");
 
-            newRoute.router_operator = ConsoleTools.GetUserChoices<AirlineOperator>(operatorChoices, operators).company_id;
+            newRoute.Operator = ConsoleTools.GetUserChoices<OperatorUIData>(operatorChoices, operators);
 
 
             _processor.AddRoute(newRoute);
@@ -139,9 +141,9 @@ namespace Lufthavn_Final
                 }
             }
 
-            Airport newAirport = new Airport();
-            newAirport.full_name = name;
-            newAirport.iata_code = iata;
+            AirportUIData newAirport = new AirportUIData();
+            newAirport.AirportName = name;
+            newAirport.AirportIataCode = iata;
             _processor.AddAirport(newAirport);
 
         }
@@ -153,29 +155,29 @@ namespace Lufthavn_Final
 
             Dictionary<ConsoleKey, string> choices = new Dictionary<ConsoleKey, string>();
 
-            List<Person> people = _processor.GetPeople();
+            List<PersonUIData> people = _processor.GetPeople();
 
             for (int i = 0; i < people.Count; i++)
             {
-                choices.Add((ConsoleKey)49 + i, people[i].person_name);
+                choices.Add((ConsoleKey)49 + i, people[i].PersonName);
             }
 
             ConsoleKey resultKey = ConsoleTools.GetUserChoices(choices);
 
-            Person chosen = people[(int)resultKey - 49]; // Oh I like to live dangerously
+            PersonUIData chosen = people[(int)resultKey - 49]; // Oh I like to live dangerously
 
-            Console.WriteLine("Chosen: " + chosen.person_name);
+            Console.WriteLine("Chosen: " + chosen.PersonName);
 
-            List<Route> chosenRoutes = new List<Route>();
+            List<RouteUIData> chosenRoutes = new List<RouteUIData>();
 
             // Load Routes
-            List<Route> routes = _processor.GetRoutes();
+            List<RouteUIData> routes = _processor.GetRoutes();
 
             // Load routes in choices
             Dictionary<ConsoleKey, string> routechoices = new Dictionary<ConsoleKey, string>();
             for (int i = 0; i < routes.Count; i++)
             {
-                routechoices.Add((ConsoleKey)49 + i, $"{routes[i].from_iata} - {routes[i].to_iata}");
+                routechoices.Add((ConsoleKey)49 + i, $"{routes[i].DepartureIata} - {routes[i].LandingIata}");
             }
 
             routechoices.Add(ConsoleKey.C, "Done");
@@ -196,9 +198,9 @@ namespace Lufthavn_Final
                 chosenRoutes.Add(routes[(int)routeChoice - 49]);
             }
 
-            Ticket ticket = new Ticket();
+            TicketUIData ticket = new TicketUIData();
 
-            ticket.Person = chosen;
+            ticket.TicketOwner = chosen;
             ticket.Routes = chosenRoutes;
 
             _processor.AddTicket(ticket);
@@ -221,10 +223,10 @@ namespace Lufthavn_Final
             if (resultKey == ConsoleKey.D1)
             {
                 Console.Clear();
-                List<Airport> airports = _processor.GetAirports();
-                foreach(Airport airport in airports)
+                List<AirportUIData> airports = _processor.GetAirports();
+                foreach(AirportUIData airport in airports)
                 {
-                    Console.WriteLine($"- Name: '{airport.full_name}', Iata: {airport.iata_code}");
+                    Console.WriteLine($"- Name: '{airport.AirportName}', Iata: {airport.AirportIataCode}");
                 }
 
                 Console.WriteLine("Press any key to go back");
@@ -234,12 +236,12 @@ namespace Lufthavn_Final
             else if(resultKey == ConsoleKey.D2)
             {
                 Console.Clear();
-                List<Ticket> tickets = _processor.GetTickets();
+                List<TicketUIData> tickets = _processor.GetTickets();
                 Dictionary<ConsoleKey, string> ticketsChoice = new Dictionary<ConsoleKey, string>();
 
                 for (int i = 0; i < tickets.Count; i++)
                 {
-                    ticketsChoice.Add((ConsoleKey)49 + i, $"Ticket owner: {tickets[i].Person.person_name}");
+                    ticketsChoice.Add((ConsoleKey)49 + i, $"Ticket owner: {tickets[i].TicketOwner.PersonName}");
                 }
 
                 Console.WriteLine();
@@ -249,7 +251,7 @@ namespace Lufthavn_Final
                 Console.WriteLine();
 
                 // I know this sucks. Just doing to show that it works
-                var ticket = _processor.GetTicketData(tickets[(int)key - 49].ticket_id);
+                var ticket = _processor.GetTicketData(tickets[(int)key - 49].TicketId);
 
                 Console.WriteLine($"Ticket ID: {ticket.ticket_id}");
                 Console.WriteLine($"Owner: {ticket.Person.person_name}");
@@ -271,11 +273,11 @@ namespace Lufthavn_Final
                 Console.WriteLine("Routes:");
                 Console.WriteLine();
 
-                List<Route> routes = _processor.GetRoutes();
+                List<RouteUIData> routes = _processor.GetRoutes();
 
                 foreach (var route in routes)
                 {
-                    Console.WriteLine($"- From: {route.from_iata}, To: {route.to_iata}. Owned by: {route.AirlineOperator.company_name}, Operated by: {route.AirlineOperator1.company_name}");
+                    Console.WriteLine($"- From: {route.DepartureIata}, To: {route.LandingIata}. Owned by: {route.Owner.OperatorName}, Operated by: {route.Operator.OperatorName}");
                 }
 
                 Console.WriteLine();

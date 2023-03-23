@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="company_id" />
           </Key>
-          <Property Name="company_id" Type="int" Nullable="false" />
+          <Property Name="company_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="company_name" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Airports">
@@ -23,14 +23,14 @@
           <Key>
             <PropertyRef Name="person_id" />
           </Key>
-          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="person_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="person_name" Type="varchar" MaxLength="80" Nullable="false" />
         </EntityType>
         <EntityType Name="Routes">
           <Key>
             <PropertyRef Name="route_id" />
           </Key>
-          <Property Name="route_id" Type="int" Nullable="false" />
+          <Property Name="route_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="from_iata" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="to_iata" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="route_owner" Type="int" Nullable="false" />
@@ -48,7 +48,7 @@
           <Key>
             <PropertyRef Name="ticket_id" />
           </Key>
-          <Property Name="ticket_id" Type="int" Nullable="false" />
+          <Property Name="ticket_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="person_id" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Routes_FromIata">
@@ -180,7 +180,7 @@
           <Key>
             <PropertyRef Name="company_id" />
           </Key>
-          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="company_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Routes" Relationship="Self.FK_Routes_RouteOperator" FromRole="AirlineOperators" ToRole="Routes" />
           <NavigationProperty Name="Routes1" Relationship="Self.FK_Routes_RouteOwner" FromRole="AirlineOperators" ToRole="Routes" />
@@ -198,7 +198,7 @@
           <Key>
             <PropertyRef Name="person_id" />
           </Key>
-          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="person_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="person_name" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Tickets" Relationship="Self.FK_Tickets_People" FromRole="People" ToRole="Tickets" />
         </EntityType>
@@ -206,7 +206,7 @@
           <Key>
             <PropertyRef Name="route_id" />
           </Key>
-          <Property Name="route_id" Type="Int32" Nullable="false" />
+          <Property Name="route_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="from_iata" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="to_iata" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="route_owner" Type="Int32" Nullable="false" />
@@ -221,7 +221,7 @@
           <Key>
             <PropertyRef Name="ticket_id" />
           </Key>
-          <Property Name="ticket_id" Type="Int32" Nullable="false" />
+          <Property Name="ticket_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="person_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="Self.FK_Tickets_People" FromRole="Tickets" ToRole="People" />
           <NavigationProperty Name="Routes" Relationship="Self.TicketRoutes" FromRole="Tickets" ToRole="Routes" />
@@ -290,7 +290,7 @@
           <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
           <End Role="Routes" Type="Self.Route" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="LufthavnEntities10" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="LufthavnEntitiesCon" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AirlineOperators" EntityType="Self.AirlineOperator" />
           <EntitySet Name="Airports" EntityType="Self.Airport" />
           <EntitySet Name="People" EntityType="Self.Person" />
@@ -326,7 +326,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="LufthavnModelStoreContainer" CdmEntityContainer="LufthavnEntities10">
+        <EntityContainerMapping StorageEntityContainer="LufthavnModelStoreContainer" CdmEntityContainer="LufthavnEntitiesCon">
           <EntitySetMapping Name="AirlineOperators">
             <EntityTypeMapping TypeName="LufthavnModel.AirlineOperator">
               <MappingFragment StoreEntitySet="AirlineOperators">

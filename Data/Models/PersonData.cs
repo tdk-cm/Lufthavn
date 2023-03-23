@@ -8,5 +8,7 @@ namespace Lufthavn_Final.ProcessingLayer.Models
 {
     internal class PersonData
     {
+        public string PersonName { get; set; }
+        public string PersonEmail { get; set; }
     }
 }

@@ -56,7 +56,7 @@ namespace Lufthavn_Final
 
                 int userAnswer = GetUserInputInteger();
 
-                if(userAnswer > 0 && userAnswer < list.Count())
+                if(userAnswer > 0 && userAnswer <= list.Count())
                 {
                     return list.ElementAt(userAnswer - 1);
                 }

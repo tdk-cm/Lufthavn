@@ -13,10 +13,10 @@ namespace Lufthavn_Final
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class LufthavnEntities10 : DbContext
+    public partial class LufthavnEntitiesCon : DbContext
     {
-        public LufthavnEntities10()
-            : base("name=LufthavnEntities10")
+        public LufthavnEntitiesCon()
+            : base("name=LufthavnEntitiesCon")
         {
         }
     
